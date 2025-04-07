@@ -32,16 +32,16 @@
                     <legend>Add a new GeoTag</legend>
 
                     <label>Latitude:</label>
-                    <input id="latitude" type="text" placeholder="49.01455"/>
+                    <input id="latitude" type="text" value="49.01455" disabled/>
 
                     <label>Longitude:</label>
-                    <input id="longitude" type="text" placeholder="8.39400"/>
+                    <input id="longitude" type="text" value="8.39400" disabled/>
 
                     <label>Name:</label>
-                    <input id="name" type="text" placeholder="e.g Central Berlin"/>
+                    <input id="name" type="text" placeholder="e.g Central Berlin" pattern="[A-Za-zÄÖÜäöüß]+" maxlength="10" required/>
 
                     <label>Hashtag:</label>
-                    <input id="hashtag" type="text" placeholder=" #ber"/>
+                    <input id="hashtag" type="text" placeholder=" #ber" maxlength="11" pattern="#[A-Za-zÄÖÜäöüß]+"/>
 
                     <input id="tag_submit" type="submit" value="Submit" />
                 </fieldset>
