@@ -187,8 +187,9 @@ margin: 20px;
   margin-bottom: 10px;
   min-height: 50px;
 
-  background-color: #00B7FF;
-  
+  background-color: #e6e6e6;
+
+  color: #00B7FF;
 }
 
 .discovery__taglist{
