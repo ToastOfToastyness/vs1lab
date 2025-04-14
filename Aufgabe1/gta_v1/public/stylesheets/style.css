@@ -14,7 +14,7 @@ html {
 
 * {
   margin: 0;
-  padding: 0;
+  padding: 7;  /*global styling changed*/
 
   /* This approach prevents issues with 3rd party content-box components */
   box-sizing: inherit;
@@ -45,6 +45,24 @@ a {
 }
 
 /* ### TODO ### Styles for other HTML elements */
+img {
+  width: 100%;
+  height: auto;
+}
+
+form fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 7px; /* space between elements */
+}
+
+form fieldset input{
+  min-height: 30px;
+}
+
+h2{
+  margin: 10px;
+}
 
 /* ... your code here ... */
 
@@ -54,7 +72,8 @@ a {
 .row {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
+  justify-content: left;
   flex: 1;
 }
 
@@ -109,29 +128,93 @@ a {
 
 /* ### TODO ### Styles for Header Component */
 
-/* ... your code here ... */
+.header {
+  background-color: lightgray;
+  padding: 20px;
+
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+  flex-wrap: wrap;
+  
+}
+
+
+.header__image {
+  max-width: 70px;
+  height: auto;
+}
 
 
 /* ### TODO ### Styles for Main Component */
 
 /* ... your code here ... */
+.main {
+display: flex;
+flex: 1;
 
+}
 
 /* ### TODO ### Styles for Tagging component */
 
-/* ... your code here ... */
+.tagging{
+  
+  display: flex;
+  flex-direction: column;
+  
+  margin: 20px;
+}
+
 
 
 /* ### TODO ### Styles for Discovery component */
 
-/* ... your code here ... */
+.discovery{
+margin: 20px;
+}
+.discovery__results{
+  margin-top: 20px;
+  margin-right: 20px;
+  padding-left: 0;
+}
+
+.discovery__results li{
+  list-style: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  min-height: 50px;
+
+  background-color: #00B7FF;
+  
+}
+
+.discovery__taglist{
+  /*width: 100%;*/
+}
+
+.discovery__map{
+  margin-top: 20px;
+}
 
 
 /* ### TODO ### Styles for Footer Component */
 
-/* ... your code here ... */
+.footer{
+  background-color: lightgray;
+  padding: 20px;
+  bottom: 0;
+}
 
 
 /* ### TODO ### Media Queries */
+
+@media (max-width: 750px){
+  .main {
+    flex-direction: column;
+  }
+}
 
 /* ... your code here ... */
