@@ -216,6 +216,19 @@ margin: 20px;
   .main {
     flex-direction: column;
   }
+  .discovery__wrapper {
+    flex-direction: column;
+  }
+  .discovery__taglist {
+    width: 100%;
+  }
+  .discovery__map {
+    width: 100%;
+  }
+  .discovery__search fieldset input{
+    width: 100%;
+  }
+
 }
 
 /* ... your code here ... */
