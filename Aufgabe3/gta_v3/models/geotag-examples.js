@@ -1,7 +1,5 @@
 // File origin: VS1LAB A3
 
-const InMemoryGeoTagStore = require("./geotag-store");
-
 /**
  * This script is a template for exercise VS1lab/Aufgabe3
  * Complete all TODOs in the code documentation.
@@ -32,14 +30,6 @@ class GeoTagExamples {
             ['Building K', 49.013190, 8.392090, '#campus'],
         ];
     }
-}
-
-geoStore = new InMemoryGeoTagStore;
-
-examples = GeoTagExamples.tagList;
-
-for( let i = 0; i < examples.length ; i++ ) {
-    geoStore.addGeoTag(examples[i][0],examples[i][1],examples[i][2],examples[i][3]);
 }
 
 module.exports = GeoTagExamples;

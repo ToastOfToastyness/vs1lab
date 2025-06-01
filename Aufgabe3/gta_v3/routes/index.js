@@ -21,7 +21,7 @@ const router = express.Router();
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTag = require('../models/geotag');
-
+const GeoTagExamples = require('../models/geotag-examples');
 /**
  * The module "geotag-store" exports a class GeoTagStore. 
  * It provides an in-memory store for geotag objects.
@@ -30,6 +30,8 @@ const GeoTag = require('../models/geotag');
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
+var GeoTagStoreObject = new GeoTagStore();
+GeoTagStoreObject.examples(); //Lade die GeoTag-Beispiele in unser Array
 
 /**
  * Route '/' for HTTP 'GET' requests.
@@ -42,7 +44,8 @@ const GeoTagStore = require('../models/geotag-store');
 
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
-  res.render('index', { taglist: [] })
+  res.render('index', { taglist:GeoTagStoreObject.getArray() , latvalue: "", longvalue: "", mapGeoTagList: 
+    JSON.stringify(GeoTagStoreObject.getArray()) })
 });
 
 /**
@@ -60,7 +63,20 @@ router.get('/', (req, res) => {
  * by radius around a given location.
  */
 
+//Route aufrufen, wenn das Formular für das Tagging (/tagging) mit POST-Daten gesendet wird
 // TODO: ... your code here ...
+router.post('/tagging',(req, res)=> {
+  GeoTagStoreObject.addGeoTag(new GeoTag(req.body.name, req.body.tagLatitude, req.body.tagLongitude, req.body.taghashtag));
+  //wird aufgerufen, um GeoTags in der Nähe der angegebenen Koordinaten zu erhalten.
+  let nearbyGT = GeoTagStoreObject.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude);
+    res.render("index", { //rendert die EJS-Datei 'index', die eine Vorlage für die Benutzeroberfläche darstellt.
+      //Daten, die an die EJS-Vorlage übergeben werden, um sie dynamisch zu rendern:
+      taglist: nearbyGT,
+      latvalue: req.body.tagLatitude,
+      longvalue: req.body.tagLongitude, 
+      mapGeoTagList: JSON.stringify(nearbyGT)
+    });   
+});
 
 /**
  * Route '/discovery' for HTTP 'POST' requests.
@@ -79,5 +95,19 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+
+//Diese Route aufrufen, wenn das Formular für (/discovery) mit POST-Daten gesendet wird.
+router.post('/discovery',(req, res)=> {
+  let searchTerm = req.body.searchbox; //Daten, die vom Client gesendet wurden, einschließlich searchbox
+  //sucht nach GeoTags in der Nähe der angegebenen Koordinaten (hiddenLatitude und hiddenLongitude) und die das Suchwort (searchTerm) enthalten.
+  let searching = GeoTagStoreObject.searchNearbyGeoTags(searchTerm);
+  res.render("index", {  //rendert die EJS-Datei 'index', die eine Vorlage für die Benutzeroberfläche darstellt.
+    //Daten, die an die EJS-Vorlage übergeben werden, um sie dynamisch zu rendern
+    taglist: searching,
+    latvalue: req.body.hiddenLatitude,
+    longvalue: req.body.hiddenLongitude,
+    mapGeoTagList: JSON.stringify(searching)
+  });   
+});
 
 module.exports = router;

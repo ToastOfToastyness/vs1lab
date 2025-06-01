@@ -1,7 +1,8 @@
 // File origin: VS1LAB A3
 
+//Module Importieren 
 const GeoTag = require("./geotag");
-
+const GeoTagExamples = require("./geotag-examples");
 /**
  * This script is a template for exercise VS1lab/Aufgabe3
  * Complete all TODOs in the code documentation.
@@ -26,50 +27,77 @@ const GeoTag = require("./geotag");
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
-    #tagarray
 
     // TODO: ... your code here ...
-    constructor(){
-        this.#tagarray = [];
+
+    //private Array #setOfGeotags speichert Geotags
+    #setOfGeotags = [];
+    examples(){
+        let tagList = GeoTagExamples.tagList;
+        for (let i = 0; i < (GeoTagExamples.tagList).length; i++) {
+                this.addGeoTag(new GeoTag(tagList[i][0], tagList[i][1], tagList[i][2], tagList[i][3]));
+        }
+    }
+    getArray(){
+        return this.#setOfGeotags;
     }
 
-    addGeoTag(name, longitude, latitude, hashtag){
-        geoTag = new GeoTag(name,longitude,latitude,hashtag);
-        this.#tagarray.push(geoTag);
+    addGeoTag(GeoTag) {
+        this.#setOfGeotags.push(GeoTag);
     }
 
     removeGeoTag(name) {
-        for( let i = 0; i < this.#tagarray.length ; i++ ) {
-            if ( this.#tagarray[i].name == name) {
-                this.#tagarray.splice(index, 1);
+        for(let i = 0; i < this.#setOfGeotags.length; i++) {
+            if(name === this.#setOfGeotags[i].name) {
+                this.#setOfGeotags.splice(i, 1);
+                break;
             }
         }
     }
+//alle Geotags in der Nähe eines gegebenen Standorts (Radius 1)
+//(Ortsdaten) in der Umgebung eines bestimmten Punkts direkt abzurufen
 
-    getNearbyGeoTags(location) {
-        arraysNearby = [];
-        let radius = 10;
-        for( let i = 0; i < this.#tagarray.length ; i++ ) {
-            let distance = Math.SQRT2(Math.pow(this.#tagarray[i].latitude - location.latitude,2) + Math.pow(this.#tagarray[i].longitude - location.longitude,2));
-            if ( distance <= radius) {
-                arraysNearby.push(this.#tagarray[i]);
+    getNearbyGeoTags(tagLatitude, tagLongitude) {
+        var radius = 1;
+        var res = [];
+        var x = tagLatitude;
+        var y = tagLongitude;
+        //'cur' Parameter der Funktion repräsentiert das aktuelle Element in Iteration .
+        this.#setOfGeotags.forEach(function (cur) {
+            var curX = cur.latitude-x;
+            var curY = cur.longitude-y;
+            var squareX = Math.pow(curX,2);
+            var squareY = Math.pow(curY,2);
+            var squareR = Math.pow(radius,2);
+            if((squareX+squareY)<=squareR) //im Bereich Zentrum +- radius
+            {
+                res.push(cur);
             }
-        }
-
-        return arraysNearby;
+        });
+        return res;
     }
+//M typischerweise eine Suchfunktion, die zusätzlich zu einem geographischen Filter 
+// auch weitere Suchkriterien berücksichtigt 
 
-    searchNearbyGeoTags(keyword) {
-        arraysNearby = this.getNearbyGeoTags;
-        searchedTags = [];
-        for( let i = 0; i < this.#tagarray.length ; i++ ) {
-            currentArray = this.#tagarray[i];
-            if (currentArray.name.includes(keyword) || currentArray.hashtag.includes(keyword)) {
-                searchedTags.push(this.#tagarray[i]);
+    searchNearbyGeoTags(searching, latitude, longitude) {
+        let match;
+        let geotags = this.getNearbyGeoTags(latitude, longitude)
+        let nearbyGeoTags = [];
+        let geoTagHash;
+        let geoTagName;
+
+        for (let i = 0; i < geotags.length; i++) {
+            geoTagName = geotags[i].name;
+            geoTagHash = geotags[i].hashtag;
+
+
+            if(geoTagName.includes(searching) || geoTagHash.includes(searching)) {
+                match = geotags[i];
+                nearbyGeoTags.push(match);
             }
         }
 
-        return searchedTags;
+        return nearbyGeoTags;
     }
 
 }
