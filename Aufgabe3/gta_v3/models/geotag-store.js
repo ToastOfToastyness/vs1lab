@@ -43,7 +43,9 @@ class InMemoryGeoTagStore{
     }
 
     addGeoTag(GeoTag) {
-        this.#setOfGeotags.push(GeoTag);
+        if (!this.#setOfGeotags.includes(GeoTag)) {
+                this.#setOfGeotags.push(GeoTag);
+        }
     }
 
     removeGeoTag(name) {
@@ -64,8 +66,8 @@ class InMemoryGeoTagStore{
         var y = tagLongitude;
         //'cur' Parameter der Funktion repräsentiert das aktuelle Element in Iteration .
         this.#setOfGeotags.forEach(function (cur) {
-            var curX = cur.latitude-x;
-            var curY = cur.longitude-y;
+            var curX = cur.latitude - x;
+            var curY = cur.longitude - y;
             var squareX = Math.pow(curX,2);
             var squareY = Math.pow(curY,2);
             var squareR = Math.pow(radius,2);

@@ -17,7 +17,17 @@ console.log("The geoTagging script is going to start...");
  */
 // ... your code here ...
 function updateLocation() {
-    LocationHelper.findLocation(function (locationHelper) {
+    const mapManager = new MapManager();
+    const mapImage = document.getElementById('mapView');
+    const mapDescription = document.getElementById('resultMap');
+    let dLat = document.getElementById('discovery_latitude').value;
+    let dLong = document.getElementById('discovery_longitude').value;
+    if(mapImage && mapDescription) {
+            mapImage.remove();
+            mapDescription.remove();
+    }
+    if (!dLat && !dLong) { 
+        LocationHelper.findLocation(function (locationHelper) {
         const latitude = locationHelper.latitude;
         const longitude = locationHelper.longitude;
 
@@ -29,23 +39,21 @@ function updateLocation() {
         document.getElementById('discovery_latitude').value = latitude;
         document.getElementById('discovery_longitude').value = longitude;
 
-        const mapManager = new MapManager();
         
         const taglist_json = document.getElementById('map').getAttribute('data-tags');
-        console.log(taglist_json);
         mapManager.initMap(latitude,longitude);
         mapManager.updateMarkers(latitude,longitude, JSON.parse(taglist_json));
 
-        const mapImage = document.getElementById('mapView');
-        const mapDescription = document.getElementById('resultMap');
 
         console.log('Latitude:', latitude);
         console.log('Longitude:', longitude);
-        if(mapImage && mapDescription) {
-            mapImage.remove();
-            mapDescription.remove();
-        }
     })
+    }
+    else {
+        const taglist_json = document.getElementById('map').getAttribute('data-tags');
+        mapManager.initMap(dLat,dLong);
+        mapManager.updateMarkers(dLat,dLong , JSON.parse(taglist_json));
+    }
 }
 
 

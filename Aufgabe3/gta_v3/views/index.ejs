@@ -43,16 +43,16 @@
                     <legend>Add a new GeoTag</legend>
 
                     <label>Latitude:</label>
-                    <input id="tagging_latitude" type="text" value="49.01455" readonly value="<%= latvalue %>">
+                    <input id="tagging_latitude" name="latitude" type="text" placeholder="49.01455" readonly value="<%= latvalue %>">
 
                     <label>Longitude:</label>
-                    <input id="tagging_longitude" type="text" value="8.39400" readonly value="<%= longvalue %>">
+                    <input id="tagging_longitude" name="longitude" type="text" placeholder="8.39400" readonly value="<%= longvalue %>">
 
                     <label>Name:</label>
-                    <input id="name" type="text" placeholder="e.g Central Berlin" pattern="[A-Za-zÄÖÜäöüß]+" maxlength="10" required/>
+                    <input id="name" type="text" name="name" placeholder="e.g Central Berlin" pattern="[A-Za-zÄÖÜäöüß]+" maxlength="10" required/>
 
                     <label>Hashtag:</label>
-                    <input id="hashtag" type="text" placeholder=" #ber" maxlength="11" pattern="#[A-Za-zÄÖÜäöüß]+"/>
+                    <input id="hashtag" type="text" name="hashtag" placeholder=" #ber" maxlength="11" pattern="#[A-Za-zÄÖÜäöüß]+"/>
 
                     <input id="tag_submit" type="submit" value="Add Tag" />
                 </fieldset>
@@ -73,11 +73,11 @@
                     <legend>Search</legend>
 
                     <label>Search term or keybords</label>
-                    <input id="search_keyword" type="text" placeholder="e.g Berlin"/>
+                    <input id="search_keyword" name="searchbox" type="text" placeholder="e.g Berlin"/>
 
-                    <input id="discovery_latitude" type="text" value="49.01455" disabled hidden/>
+                    <input id="discovery_latitude" name="hiddenLatitude" type="text" value="<%= latvalue %>" placeholder="49.01455"  hidden/>
 
-                    <input  id="discovery_longitude" type="text" value="8.39400" disabled hidden/>
+                    <input  id="discovery_longitude" name="hiddenLongitude" type="text" value="<%= longvalue %>" placeholder="8.39400"  hidden/>
 
                     <input id="search_submit" type="submit" value="Search" />
                 </fieldset>
@@ -86,7 +86,7 @@
 
             <div class="discovery__wrapper row">
                 <div class="discovery__taglist col-3">
-                    <ul class="discovery__results" id="discoveryResults">
+                    <ul class="discovery__results" id="discoveryResults" name="discovery_results">
 
                         <!-- TODO: HTML AUS AUFGABE2 HIERHER KOPIEREN UND DIE BEISPIEL-EINTRÄGE DER DISCOVERY-LISTE MIT DEN FOLGENDEN ZEILEN ERSETZEN -->
                         

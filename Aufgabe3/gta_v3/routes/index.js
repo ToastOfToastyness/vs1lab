@@ -66,9 +66,10 @@ router.get('/', (req, res) => {
 //Route aufrufen, wenn das Formular für das Tagging (/tagging) mit POST-Daten gesendet wird
 // TODO: ... your code here ...
 router.post('/tagging',(req, res)=> {
-  GeoTagStoreObject.addGeoTag(new GeoTag(req.body.name, req.body.tagLatitude, req.body.tagLongitude, req.body.taghashtag));
+
+  GeoTagStoreObject.addGeoTag(new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag));
   //wird aufgerufen, um GeoTags in der Nähe der angegebenen Koordinaten zu erhalten.
-  let nearbyGT = GeoTagStoreObject.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude);
+  let nearbyGT = GeoTagStoreObject.getNearbyGeoTags(req.body.latitude, req.body.longitude);
     res.render("index", { //rendert die EJS-Datei 'index', die eine Vorlage für die Benutzeroberfläche darstellt.
       //Daten, die an die EJS-Vorlage übergeben werden, um sie dynamisch zu rendern:
       taglist: nearbyGT,
@@ -100,7 +101,7 @@ router.post('/tagging',(req, res)=> {
 router.post('/discovery',(req, res)=> {
   let searchTerm = req.body.searchbox; //Daten, die vom Client gesendet wurden, einschließlich searchbox
   //sucht nach GeoTags in der Nähe der angegebenen Koordinaten (hiddenLatitude und hiddenLongitude) und die das Suchwort (searchTerm) enthalten.
-  let searching = GeoTagStoreObject.searchNearbyGeoTags(searchTerm);
+  let searching = GeoTagStoreObject.searchNearbyGeoTags(searchTerm, req.body.hiddenLatitude, req.body.hiddenLongitude);
   res.render("index", {  //rendert die EJS-Datei 'index', die eine Vorlage für die Benutzeroberfläche darstellt.
     //Daten, die an die EJS-Vorlage übergeben werden, um sie dynamisch zu rendern
     taglist: searching,
