@@ -30,9 +30,11 @@ function updateLocation() {
         document.getElementById('discovery_longitude').value = longitude;
 
         const mapManager = new MapManager();
-
+        
+        const taglist_json = document.getElementById('map').getAttribute('data-tags');
+        console.log(taglist_json);
         mapManager.initMap(latitude,longitude);
-        mapManager.updateMarkers(latitude,longitude);
+        mapManager.updateMarkers(latitude,longitude, JSON.parse(taglist_json));
 
         const mapImage = document.getElementById('mapView');
         const mapDescription = document.getElementById('resultMap');
