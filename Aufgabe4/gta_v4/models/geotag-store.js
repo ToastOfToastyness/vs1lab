@@ -32,10 +32,18 @@ class InMemoryGeoTagStore{
 
     //private Array #setOfGeotags speichert Geotags
     #setOfGeotags = [];
+    idCounter = 0;
+
+    generateNewID() {
+        this.idCounter += 1;
+        return this.idCounter;
+    }
+
     examples(){
         let tagList = GeoTagExamples.tagList;
         for (let i = 0; i < (GeoTagExamples.tagList).length; i++) {
-                this.addGeoTag(new GeoTag(tagList[i][0], tagList[i][1], tagList[i][2], tagList[i][3]));
+                var newId = this.generateNewID;
+                this.addGeoTag(new GeoTag(tagList[i][0], tagList[i][1], tagList[i][2], tagList[i][3], newId));
         }
     }
     getArray(){
@@ -53,6 +61,14 @@ class InMemoryGeoTagStore{
             if(name === this.#setOfGeotags[i].name) {
                 this.#setOfGeotags.splice(i, 1);
                 break;
+            }
+        }
+    }
+
+    getGeoTagById(id) {
+        for(let i = 0; i < this.#setOfGeotags.length; i++) {
+            if(id === this.#setOfGeotags[i].id) {
+                return this.#setOfGeotags[i];
             }
         }
     }
