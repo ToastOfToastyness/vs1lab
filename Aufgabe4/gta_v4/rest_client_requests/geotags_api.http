@@ -1,0 +1,38 @@
+### Create a new GeoTag
+POST http://localhost:3000/api/geotags
+Content-Type: application/json
+
+{
+  "name": "Castle",
+  "latitude": 49.01379,
+  "longitude": 8.404435,
+  "hashtag": "#Baum"
+}
+
+###
+
+### Get all GeoTag with query
+GET GET http://localhost:3000/api/geotags?searchTerm="Castle"&latitude=49.01379&longitude=-8.404435
+
+###
+
+### Get GeoTag by ID (replace with real ID from POST response)
+GET http://localhost:3000/api/geotags/0
+
+###
+
+### Update GeoTag (replace with real ID)
+PUT http://localhost:3000/api/geotags/1
+Content-Type: application/json
+
+{
+  "name": "Updated Beach",
+  "latitude": 36.77,
+  "longitude": -119.41,
+  "hashtag": "#surf"
+}
+
+###
+
+### Delete GeoTag (replace with real ID)
+DELETE http://localhost:3000/api/geotags/0

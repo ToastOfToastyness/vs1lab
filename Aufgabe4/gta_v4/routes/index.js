@@ -126,9 +126,9 @@ router.post('/discovery',(req, res)=> {
  */
 
 // TODO: ... your code here ...
-router.get('/api/geotags', function(res,req) {
+router.get('/api/geotags', function(req,res) {
   const { searchTerm, latitude, longitude } = req.query;
-  let searching = GeoTagStoreObject.searchNearbyGeoTags(searchTerm, latitude, longitude);
+  const searching = GeoTagStoreObject.searchNearbyGeoTags(searchTerm, latitude, longitude);
   res.json(searching);
 })
 
@@ -145,7 +145,7 @@ router.get('/api/geotags', function(res,req) {
  */
 
 // TODO: ... your code here ...
-router.post('/api/geotags', function(res,req) {
+router.post('/api/geotags', function(req,res) {
   
   const { name, latitude, longitude, hashtag } = req.body;
   var id = GeoTagStoreObject.generateNewID();
@@ -170,10 +170,11 @@ router.post('/api/geotags', function(res,req) {
  */
 
 // TODO: ... your code here ...
-router.get('/api/api/geotags/:id', function(res,req) {
+router.get('/api/geotags/:id', function(req,res) {
   const tagId = req.params.id;
   const geoTag = GeoTagStoreObject.getGeoTagById(tagId)
   res.json(geoTag);
+  
 })
 
 /**
@@ -191,7 +192,7 @@ router.get('/api/api/geotags/:id', function(res,req) {
  */
 
 // TODO: ... your code here ...
-router.put('/api/api/geotags/:id', function(res,req) {
+router.put('/api/geotags/:id', function(req,res) {
   const tagId = req.params.id;
   const { name, latitude, longitude, hashtag } = req.body;
 
@@ -216,7 +217,7 @@ router.put('/api/api/geotags/:id', function(res,req) {
  */
 
 // TODO: ... your code here ...
-router.delete('/api/geotags/:id', function(res,req) {
+router.delete('/api/geotags/:id', function(req,res) {
   const tagId = req.params.id;
   const geoTag = GeoTagStoreObject.getGeoTagById(tagId);
   const name = geoTag.name;
