@@ -112,6 +112,7 @@ class GeoTag {
             latitude: this.latitude,
             longitude: this.longitude,
             hashtag: this.hashtag,
+            id: this.id
         };
     }
 
@@ -121,7 +122,7 @@ class GeoTag {
      * @returns {GeoTag} - A new GeoTag object.
      */
     static fromJSON(json) {
-        return new GeoTag(json.name, json.latitude, json.longitude, json.hashtag);
+        return new GeoTag(json.name, json.latitude, json.longitude, json.hashtag, json.id);
     }
 
 }

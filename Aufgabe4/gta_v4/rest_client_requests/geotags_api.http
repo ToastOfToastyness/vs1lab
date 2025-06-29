@@ -11,18 +11,23 @@ Content-Type: application/json
 
 ###
 
-### Get all GeoTag with query
-GET GET http://localhost:3000/api/geotags?searchTerm="Castle"&latitude=49.01379&longitude=-8.404435
+### Get all Geotags from the first page
+GET http://localhost:3000/api/geotags?page=2&pageSize=5
+###
+
+
+### Get all GeoTag with query specifications
+GET http://localhost:3000/api/geotags?searchTerm=Castle&latitude=49.01379&longitude=8.404435
 
 ###
 
-### Get GeoTag by ID (replace with real ID from POST response)
-GET http://localhost:3000/api/geotags/0
+### Get GeoTag by ID 
+GET http://localhost:3000/api/geotags/12
 
 ###
 
-### Update GeoTag (replace with real ID)
-PUT http://localhost:3000/api/geotags/1
+### Update GeoTag 
+PUT http://localhost:3000/api/geotags/12
 Content-Type: application/json
 
 {
@@ -34,5 +39,10 @@ Content-Type: application/json
 
 ###
 
+### Get GeoTag by ID 
+GET http://localhost:3000/api/geotags/12
+
+###
+
 ### Delete GeoTag (replace with real ID)
-DELETE http://localhost:3000/api/geotags/0
+DELETE http://localhost:3000/api/geotags/12

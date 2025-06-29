@@ -42,7 +42,7 @@ class InMemoryGeoTagStore{
     examples(){
         let tagList = GeoTagExamples.tagList;
         for (let i = 0; i < (GeoTagExamples.tagList).length; i++) {
-                var newId = this.generateNewID;
+                var newId = this.generateNewID();
                 this.addGeoTag(new GeoTag(tagList[i][0], tagList[i][1], tagList[i][2], tagList[i][3], newId));
         }
     }
@@ -65,12 +65,25 @@ class InMemoryGeoTagStore{
         }
     }
 
+    removeGeoTagById(id) {
+        for(let i = 0; i < this.#setOfGeotags.length; i++) {
+            if(id.toString() === this.#setOfGeotags[i].id.toString()) {
+                this.#setOfGeotags.splice(i, 1);
+                break;
+            }
+        }
+    }
+
     getGeoTagById(id) {
         for(let i = 0; i < this.#setOfGeotags.length; i++) {
-            if(id === this.#setOfGeotags[i].id) {
+            
+            if(id.toString() === this.#setOfGeotags[i].id.toString()) {
+                console.log(this.#setOfGeotags[i]);
                 return this.#setOfGeotags[i];
             }
         }
+        console.log("cant find it")
+        return null;
     }
 //alle Geotags in der Nähe eines gegebenen Standorts (Radius 1)
 //(Ortsdaten) in der Umgebung eines bestimmten Punkts direkt abzurufen
@@ -99,10 +112,16 @@ class InMemoryGeoTagStore{
 
     searchNearbyGeoTags(searching, latitude, longitude) {
         let match;
-        let geotags = this.getNearbyGeoTags(latitude, longitude)
+        let geotags = [];
         let nearbyGeoTags = [];
         let geoTagHash;
         let geoTagName;
+
+        if(longitude && latitude) {
+            geotags = this.getNearbyGeoTags(latitude, longitude);
+        }else{
+            geotags = this.getArray();
+        }
 
         for (let i = 0; i < geotags.length; i++) {
             geoTagName = geotags[i].name;

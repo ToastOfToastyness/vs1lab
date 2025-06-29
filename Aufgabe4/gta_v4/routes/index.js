@@ -127,9 +127,43 @@ router.post('/discovery',(req, res)=> {
 
 // TODO: ... your code here ...
 router.get('/api/geotags', function(req,res) {
-  const { searchTerm, latitude, longitude } = req.query;
-  const searching = GeoTagStoreObject.searchNearbyGeoTags(searchTerm, latitude, longitude);
-  res.json(searching);
+  const { searchTerm, latitude, longitude, page, pageSize } = req.query;
+
+  let searching = []
+
+  console.log(req.query)
+
+  if (searchTerm) {
+    searching = GeoTagStoreObject.searchNearbyGeoTags(searchTerm, latitude, longitude);
+  } else if (!searchTerm && longitude && latitude){
+    searching = GeoTagStoreObject.getNearbyGeoTags(latitude, longitude);
+  } else {
+    searching = GeoTagStoreObject.getArray();
+  }
+
+
+
+  // for pagination 
+  const totalItems = searching.length;
+  const pSize = pageSize && !isNaN(parseInt(pageSize, 10))
+    ? Math.max(parseInt(pageSize, 10), 1)
+    : totalItems;
+  let p = page && !isNaN(parseInt(page, 10)) ? parseInt(page, 10) : 1;
+  const totalPages = pSize > 0 ? Math.ceil(totalItems / pSize) : 1;
+  if (p < 1) p = 1;
+  if (p > totalPages) p = totalPages;
+  const startIdx = (p - 1) * pSize;
+
+  // läd nur die daten die angezeigt werden sollen
+  const pageData = searching.slice(startIdx, startIdx + pSize);
+
+  res.json({
+    page: p,
+    pageSize: pSize,
+    totalItems,
+    totalPages,
+    data: pageData
+  });
 })
 
 
@@ -148,10 +182,12 @@ router.get('/api/geotags', function(req,res) {
 router.post('/api/geotags', function(req,res) {
   
   const { name, latitude, longitude, hashtag } = req.body;
+  if (!name || !latitude || !longitude) {
+    return res.status(400).json({ error: 'name, latitude und longitude sind erforderlich' });
+  }
   var id = GeoTagStoreObject.generateNewID();
   const newGeoTag = new GeoTag(name, latitude, longitude, hashtag, id)
   GeoTagStoreObject.addGeoTag(newGeoTag);
-
 
   res
     .status(201)
@@ -172,7 +208,10 @@ router.post('/api/geotags', function(req,res) {
 // TODO: ... your code here ...
 router.get('/api/geotags/:id', function(req,res) {
   const tagId = req.params.id;
-  const geoTag = GeoTagStoreObject.getGeoTagById(tagId)
+  const geoTag = GeoTagStoreObject.getGeoTagById(tagId);
+  if (!geoTag) {
+    return res.status(404).json({ error: 'GeoTag nicht gefunden' });
+  }
   res.json(geoTag);
   
 })
@@ -194,15 +233,17 @@ router.get('/api/geotags/:id', function(req,res) {
 // TODO: ... your code here ...
 router.put('/api/geotags/:id', function(req,res) {
   const tagId = req.params.id;
-  const { name, latitude, longitude, hashtag } = req.body;
-
-  const existingTag = GeoTagStoreObject.getGeoTagById(id);
-  GeoTagStoreObject.removeGeoTag(existingTag.name);
-  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag, id);
+  const { name, latitude, longitude, hashtag, id } = req.body;
+  const existingTag = GeoTagStoreObject.getGeoTagById(tagId);
+  if (!existingTag) {
+    return res.status(404).json({ error: 'GeoTag nicht gefunden' });
+  }
+  GeoTagStoreObject.removeGeoTagById(existingTag.id);
+  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag, tagId);
 
   GeoTagStoreObject.addGeoTag(newGeoTag);
 
-  res.json(updatedTag);
+  res.json(newGeoTag);
 })
 
 /**
@@ -220,6 +261,9 @@ router.put('/api/geotags/:id', function(req,res) {
 router.delete('/api/geotags/:id', function(req,res) {
   const tagId = req.params.id;
   const geoTag = GeoTagStoreObject.getGeoTagById(tagId);
+  if (!geoTag) {
+    return res.status(404).json({ error: 'GeoTag nicht gefunden' });
+  }
   const name = geoTag.name;
   GeoTagStoreObject.removeGeoTag(name);
   res.json(geoTag);
