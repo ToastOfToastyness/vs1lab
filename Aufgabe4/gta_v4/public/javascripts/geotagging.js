@@ -1,6 +1,5 @@
 // File origin: VS1LAB A2
 
-
 /* eslint-disable no-unused-vars */
 
 // This script is executed when the browser loads index.html.
@@ -94,9 +93,11 @@ function refreshDiscovery({searchTerm, latitude, longitude, page = 1, pageSize =
  * A function to retrieve the current location and update the page.
  * It is called once the page has been fully loaded.
  */
+    mapManager = new MapManager();
+
 // ... your code here ...
 function updateLocation() {
-    const mapManager = new MapManager();
+
     const mapImage = document.getElementById('mapView');
     const mapDescription = document.getElementById('resultMap');
     let dLat = document.getElementById('discovery_latitude').value;
@@ -133,10 +134,8 @@ function updateLocation() {
     }
     else {
         const taglist_json = document.getElementById('map').getAttribute('data-tags');
-        mapManager.initMap(dLat,dLong);
         mapManager.updateMarkers(dLat,dLong , JSON.parse(taglist_json));
         const searchTerm = document.getElementById("search_keyword").value || "";
-        refreshDiscovery({searchTerm, latitude: dLat, longitude: dLong, page: 1, pageSize: 5 });
     }
 }
 
